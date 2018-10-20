@@ -18,12 +18,9 @@ export default {
     },
     textArea: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: "wrap",
         marginTop: 14,
         height: 100,
+        marginHorizontal: 30
     },
     titleText: {
         textAlign: 'center',
@@ -32,7 +29,6 @@ export default {
         fontSize: 30,
         marginBottom: 30
     },
-
     text: {
         textAlign: 'center',
         color: 'white',

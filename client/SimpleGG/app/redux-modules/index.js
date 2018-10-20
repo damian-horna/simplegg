@@ -1,8 +1,8 @@
 import {combineReducers} from "redux";
-import menuReducer from "./menu/reducer";
+import serverReducer from "./server/reducer";
 
 const rootReducer = combineReducers({
-    menuReducer
+    serverReducer: serverReducer
 });
 
 export default rootReducer;

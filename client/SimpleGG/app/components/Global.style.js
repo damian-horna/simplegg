@@ -16,28 +16,27 @@ export default {
         justifyContent: 'center',
         textAlign: 'center'
     },
-    buttonInactive: {
-        backgroundColor: 'rgba(146,126,167,0.3)',
+    button: {
+        backgroundColor: '#4985A8',
         padding: 30,
-        marginTop: 20,
-        marginBottom: 20
+        bottom: 0,
+        width: '100%',
     },
-    buttonActive: {
-        backgroundColor: '#7935FF',
-        padding: 30,
-        marginTop: 20,
-        marginBottom: 20
+    register: {
+        backgroundColor: '#4985A8',
+        padding: 25,
+        margin: 20,
+        borderRadius: 5
+    },
+
+    buttonText: {
+        textAlign: 'center',
+        fontSize: 17,
+        color: 'white',
+        fontWeight: 'bold'
     },
     textBold: {
         fontWeight: 'bold'
-    },
-    button: {
-        padding: 30,
-        alignItems: 'center',
-        marginTop: 30,
-        marginLeft: 15,
-        marginRight: 15,
-        borderRadius: 5
     },
     textInline: {
         flexDirection: 'row',
