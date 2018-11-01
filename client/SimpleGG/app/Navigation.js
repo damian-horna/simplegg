@@ -8,15 +8,21 @@ import WelcomeScreen from './components/screens/welcome/Welcome.js'
 import React from "react";
 import SettingsScreen from "./components/screens/settings/Settings";
 import MessagesScreen from "./components/screens/messages/Messages";
+import ConversationScreen from './components/screens/conversation/Conversation';
+import ContactAddScreen from './components/screens/contacts/ContactAdd';
+import RegistrationScreen from './components/screens/register/Registration';
 
 const Navigator = createStackNavigator({
         Welcome: {screen: WelcomeScreen},
         Settings: {screen: SettingsScreen},
         Messages: {screen: MessagesScreen},
+        Conversation: {screen: ConversationScreen},
+        ContactAdd: {screen: ContactAddScreen},
+        Registration: {screen: RegistrationScreen}
     },
     {
         headerMode: 'none',
-        initialRouteName: 'Messages'
+        initialRouteName: 'Welcome'
     }
 );
 

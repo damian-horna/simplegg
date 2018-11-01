@@ -1,20 +1,20 @@
 import React from 'react';
-import {Image, ImageBackground, Text, TouchableOpacity, View, KeyboardAvoidingView} from 'react-native';
-import styles from './Settings.style.js';
+import {ImageBackground, KeyboardAvoidingView, View} from 'react-native';
+import styles from './Registration.style.js';
 import global from "../../../Global.style";
 import LabelInput from "../../inputs/labelInput/LabelInput";
 import {connect} from "react-redux";
-import {setServerAddressAndPort} from "../../../redux-modules/server/actions";
-import NavTitle from "../../navbars/NavTitle";
 import {Icon} from "react-native-elements";
+import NavBack from "../../navbars/NavBack";
+import {register} from "../../../redux-modules/server/actions";
+import NavTitle from "../../navbars/NavTitle";
 
-class SettingsScreen extends React.Component {
+class RegistrationScreen extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            serverAddress: '',
-            port: '',
+            name: '',
         };
     }
 
@@ -25,14 +25,11 @@ class SettingsScreen extends React.Component {
             <View style={styles.container}>
                 <ImageBackground source={require('../../../assets/bg_simple.png')}
                                  style={global.fullWidthAndHeight}>
-                    <NavTitle title='Server info'/>
+                    <NavTitle title='Registration'
+                             navigation={this.props.navigation}/>
                     <View style={styles.textArea}>
-                        <LabelInput label='Server address'
-                                    bindValue={v => this.setState({...this.state, serverAddress: v})}/>
-                        <LabelInput label='Port'
-                                    bindValue={v => this.setState({...this.state, port: v})}/>
-                        <Text style={styles.text}>Current server
-                            address: {this.props.serverAddress + ':' + this.props.port}</Text>
+                        <LabelInput label='Provide a name: '
+                                    bindValue={v => this.setState({...this.state, name: v})}/>
                     </View>
 
                     <KeyboardAvoidingView behavior="height" enabled>
@@ -46,7 +43,8 @@ class SettingsScreen extends React.Component {
                                 containerStyle={{backgroundColor: '#4985A8'}}
                                 underlayColor='#387497'
                                 onPress={() => {
-                                    this.props.setServerAddressAndPort(this.state.serverAddress, this.state.port);
+                                    this.props.register(this.state.name);
+                                    navigate('Messages')
                                 }}/>
                         </View>
                     </KeyboardAvoidingView>
@@ -60,15 +58,13 @@ class SettingsScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setServerAddressAndPort: (serverAddress, port) => dispatch(setServerAddressAndPort(serverAddress, port))
+        register: (name) => dispatch(register(name))
     }
 }
 
 function mapStateToProps(state) {
     return {
-        serverAddress: state.serverReducer.serverAddress,
-        port: state.serverReducer.port
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationScreen);

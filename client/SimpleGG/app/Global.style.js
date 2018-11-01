@@ -17,10 +17,11 @@ export default {
         textAlign: 'center'
     },
     button: {
-        backgroundColor: '#4985A8',
         padding: 30,
         bottom: 0,
         width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
 

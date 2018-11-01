@@ -16,8 +16,8 @@ export default class WelcomeScreen extends React.Component {
                         <Text style={styles.titleText}>Gadu Gadu</Text>
                         <Text style={styles.text}>Let's chat</Text>
                     </View>
-                    <TouchableOpacity onPress={() => navigate('Login')} style={global.register}>
-                        <Text style={global.buttonText}>LOGIN</Text>
+                    <TouchableOpacity onPress={() => navigate('Registration')} style={global.register}>
+                        <Text style={global.buttonText}>REGISTER</Text>
                     </TouchableOpacity>
                 </ImageBackground>
             </View>

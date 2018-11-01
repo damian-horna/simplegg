@@ -1,4 +1,11 @@
-import {SET_SERVER_ADDRESS_AND_PORT, SET_RESPONSE} from "./types";
+import {
+    SET_SERVER_ADDRESS_AND_PORT,
+    SET_RESPONSE,
+    SET_CONTACTS,
+    CONTACT_ADD,
+    REGISTER_USER,
+    USER_SELECTED
+} from "./types";
 
 export function setServerAddressAndPort(serverAddress, port) {
     return {
@@ -38,5 +45,34 @@ function setServerResponse(response){
     return {
         type: SET_RESPONSE,
         response: response
+    }
+}
+
+export function addNewContact(contactNumber){
+    return {
+        type: CONTACT_ADD,
+        contactNumber: contactNumber,
+    };
+}
+
+export function setContacts(contacts) {
+    return {
+        type: SET_CONTACTS,
+        contacts: contacts,
+        port: port
+    };
+}
+
+export function register(name){
+    return {
+        type: REGISTER_USER,
+        name: name
+    }
+}
+
+export function selectUser(index){
+    return {
+        type: USER_SELECTED,
+        index: index
     }
 }

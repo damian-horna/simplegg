@@ -32,7 +32,7 @@ export default {
     text: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 14,
+        fontSize: 20,
         lineHeight: 25
     }
 }
