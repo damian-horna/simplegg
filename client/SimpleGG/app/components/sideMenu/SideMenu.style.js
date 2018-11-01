@@ -8,11 +8,11 @@ export default {
     menuItem: {
         flexDirection: 'row',
         paddingVertical: 16,
-        paddingLeft: 30
+        paddingLeft: 50
     },
     label: {
-        color: '#59adb4',
-        fontSize: 18,
+        color: 'white',
+        fontSize: 14,
         marginLeft: 16,
         fontWeight: '300',
     },

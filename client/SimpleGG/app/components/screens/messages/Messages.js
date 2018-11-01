@@ -1,64 +1,47 @@
 import React from 'react';
-import {Image, ImageBackground, Text, TouchableOpacity, View, KeyboardAvoidingView} from 'react-native';
+import {Image, ImageBackground, Text, TouchableOpacity, View, KeyboardAvoidingView, ScrollView} from 'react-native';
 import styles from './Messages.style.js';
-import global from "../../Global.style";
-import LabelInput from "../../inputs/labelInput/LabelInput";
-import {connect} from "react-redux";
-import {sendMessage} from "../../../redux-modules/server/actions";
-
+import global from "../../../Global.style";
+import connect from "react-redux/es/connect/connect";
+import EStyleSheet from 'react-native-extended-stylesheet';
+import NavAdd from "../../navbars/NavAdd";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class MessagesScreen extends React.Component {
-
-    constructor() {
-        super();
-        this.state = {
-            message: '',
-        };
-    }
-
     render() {
-        const {navigate} = this.props.navigation;
-
         return (
-            <View style={styles.container}>
+            <View style={global.container}>
                 <ImageBackground source={require('../../../assets/bg_simple.png')}
                                  style={global.fullWidthAndHeight}>
+                    <NavAdd title='Messages' addAction={() => {
+                        this.props.navigation.navigate('ContactAddScreen')
+                    }} navigation={this.props.navigation}/>
+                    <ScrollView>
+                        {this.props.contacts.map((obj, i) => {
+                            return (
+                                <TouchableOpacity style={styles.contactWrapper} key={i}>
+                                    <View
+                                        style={EStyleSheet.child(styles, 'contact', i, this.props.contacts.length)}>
+                                        <Text style={styles.transactionTitle}>{obj.name}</Text>
+                                        <Icon name={'paper-plane'} color={'white'}/>
+                                    </View>
+                                </TouchableOpacity>
 
-                    <View style={styles.textArea}>
-                        <LabelInput label='message'
-                                    bindValue={v => this.setState({...this.state, message: v})}/>
-                        <LabelInput label='response'
-                                    value={this.props.response}/>
-                    </View>
-
-                    <KeyboardAvoidingView behavior="height" enabled>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.props.sendMessage(this.props.host, this.props.port, this.state.message);
-                                }}
-                            style={global.button}>
-                            <Text style={global.buttonText}>CONFIRM</Text>
-                        </TouchableOpacity>
-                    </KeyboardAvoidingView>
+                            )
+                        })}
+                    </ScrollView>
                 </ImageBackground>
             </View>
-
         );
     }
 }
 
 function mapStateToProps(state) {
     return {
-        host: state.serverReducer.serverAddress,
-        port: state.serverReducer.port,
-        response: state.serverReducer.response
+        contacts: state.serverReducer.contacts
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        sendMessage: (host, port, msg) => dispatch(sendMessage(host, port, msg))
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessagesScreen);
+export default connect(mapStateToProps)(MessagesScreen);
+

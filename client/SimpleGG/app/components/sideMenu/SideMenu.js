@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import styles from './SideMenu.style';
 import {Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-navigation';
+import {Icon} from "react-native-elements";
 
 export default class SideMenu extends Component {
     render() {
@@ -11,13 +12,7 @@ export default class SideMenu extends Component {
                 <SafeAreaView style={styles.container} forceInset={{top: 'always', horizontal: 'never'}}>
                     <FlatList data={[
                         {
-                            name: 'Contacts',
-                            key: 'Contacts',
-                            action: () => {
-                                this.props.navigation.navigate('Contacts');
-                            }
-                        },
-                        {
+                            iconName: 'message',
                             name: 'Messages',
                             key: 'Messages',
                             action: () => {
@@ -25,6 +20,7 @@ export default class SideMenu extends Component {
                             }
                         },
                         {
+                            iconName: 'settings',
                             name: 'Settings',
                             key: 'Settings',
                             action: () => {
@@ -37,6 +33,7 @@ export default class SideMenu extends Component {
                                       item.action();
                                   }}>
                                       <View style={[styles.menuItem]}>
+                                          <Icon name={item.iconName} color={'white'}/>
                                           <Text style={styles.label}>{item.key}</Text>
                                       </View>
                                   </TouchableOpacity>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, ImageBackground, Text, TouchableOpacity, View, KeyboardAvoidingView} from 'react-native';
 import styles from './Settings.style.js';
-import global from "../../Global.style";
+import global from "../../../Global.style";
 import LabelInput from "../../inputs/labelInput/LabelInput";
 import {connect} from "react-redux";
 import {setServerAddressAndPort} from "../../../redux-modules/server/actions";

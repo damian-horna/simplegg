@@ -22,6 +22,8 @@ export default {
         bottom: 0,
         width: '100%',
     },
+
+
     register: {
         backgroundColor: '#4985A8',
         padding: 25,

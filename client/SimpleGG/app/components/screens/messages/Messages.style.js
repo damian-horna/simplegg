@@ -34,5 +34,43 @@ export default {
         color: 'white',
         fontSize: 20,
         lineHeight: 25
-    }
+    },
+    transactionTitle: {
+        flex: 2,
+        color: 'white',
+        marginLeft: 10,
+        fontSize: 13,
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 15,
+        marginTop: 25
+    },
+
+    contact: {
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 20,
+        backgroundColor: '#444444',
+        paddingVertical: 15,
+        marginVertical: 5
+    },
+    'contact:first-child': {
+        marginTop: 10,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+    },
+    'contact:last-child': {
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    contactWrapper: {
+        backgroundColor: '#333333',
+        bottom: 0,
+        width: '100%',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    },
 }

@@ -12,11 +12,11 @@ import MessagesScreen from "./components/screens/messages/Messages";
 const Navigator = createStackNavigator({
         Welcome: {screen: WelcomeScreen},
         Settings: {screen: SettingsScreen},
-        Messages: {screen: MessagesScreen}
+        Messages: {screen: MessagesScreen},
     },
     {
         headerMode: 'none',
-        initialRouteName: 'Welcome'
+        initialRouteName: 'Messages'
     }
 );
 

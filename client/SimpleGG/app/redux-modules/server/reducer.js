@@ -1,9 +1,11 @@
 import {SET_RESPONSE, SET_SERVER_ADDRESS_AND_PORT} from "./types";
+import {SET_CONTACTS} from "../contacts/types";
 
 const initial = {
     serverAddress: '',
     port: '',
-    response: ''
+    response: '',
+    contacts: [{number: 1, name: 'Jan Kowalski'}, {number: 2, name: 'Tomasz Wicher'}, {number: 3, name: 'Wicher Tomasz'}]
 };
 
 const serverReducer = (state = initial, action) => {
@@ -13,6 +15,9 @@ const serverReducer = (state = initial, action) => {
         }
         case SET_RESPONSE: {
             return {...state, response: action.response};
+        }
+        case SET_CONTACTS: {
+            return {...state, serverAddress: action.serverAddress, port: action.port};
         }
         default:
             return state;

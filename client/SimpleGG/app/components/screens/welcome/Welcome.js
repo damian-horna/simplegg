@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import styles from './Welcome.style.js';
-import global from "../../Global.style";
+import global from "../../../Global.style";
 
 export default class WelcomeScreen extends React.Component {
 
