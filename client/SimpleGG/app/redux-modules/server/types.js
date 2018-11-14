@@ -1,6 +1,9 @@
 export const SET_SERVER_ADDRESS_AND_PORT = 'SET_SERVER_ADDRESS_AND_PORT';
 export const SET_RESPONSE = 'SET_RESPONSE';
 export const SET_CONTACTS = 'SET_CONTACTS';
-export const CONTACT_ADD = 'CONTACT_ADD';
 export const REGISTER_USER = 'REGISTER_USER';
 export const USER_SELECTED = 'USER_SELECTED';
+export const SET_USER_ID = 'SET_USER_ID';
+export const ADD_CONTACT = 'ADD_CONTACT';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const RESET_CONTACTS = 'RESET_CONTACTS';

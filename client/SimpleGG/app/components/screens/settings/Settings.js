@@ -4,7 +4,7 @@ import styles from './Settings.style.js';
 import global from "../../../Global.style";
 import LabelInput from "../../inputs/labelInput/LabelInput";
 import {connect} from "react-redux";
-import {setServerAddressAndPort} from "../../../redux-modules/server/actions";
+import {connectToServer, setServerAddressAndPort} from "../../../redux-modules/server/actions";
 import NavTitle from "../../navbars/NavTitle";
 import {Icon} from "react-native-elements";
 
@@ -46,7 +46,9 @@ class SettingsScreen extends React.Component {
                                 containerStyle={{backgroundColor: '#4985A8'}}
                                 underlayColor='#387497'
                                 onPress={() => {
+                                    this.props.connectToServer(this.state.serverAddress, this.state.port);
                                     this.props.setServerAddressAndPort(this.state.serverAddress, this.state.port);
+                                    this.props.navigation.navigate('Welcome')
                                 }}/>
                         </View>
                     </KeyboardAvoidingView>
@@ -60,7 +62,8 @@ class SettingsScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setServerAddressAndPort: (serverAddress, port) => dispatch(setServerAddressAndPort(serverAddress, port))
+        setServerAddressAndPort: (serverAddress, port) => dispatch(setServerAddressAndPort(serverAddress, port)),
+        connectToServer: (serverAddress, port) => dispatch(connectToServer(serverAddress, port))
     }
 }
 

@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styles from './SideMenu.style';
-import {Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Icon} from "react-native-elements";
+import {resetContacts, retrieveContacts} from "../../redux-modules/server/actions";
+import connect from "react-redux/es/connect/connect";
 
-export default class SideMenu extends Component {
+class SideMenu extends Component {
     render() {
         return (
             <View style={styles.container}>
@@ -16,6 +18,8 @@ export default class SideMenu extends Component {
                             name: 'Messages',
                             key: 'Messages',
                             action: () => {
+                                this.props.resetContacts();
+                                this.props.retrieveContacts();
                                 this.props.navigation.navigate("Messages")
                             }
                         },
@@ -39,6 +43,7 @@ export default class SideMenu extends Component {
                                   </TouchableOpacity>
                               }
                     />
+                    <Text style={{color: 'white', width: '100%', textAlign: 'center'}}>Your internal id is: {this.props.id}</Text>
                 </SafeAreaView>
             </View>
         );
@@ -48,3 +53,18 @@ export default class SideMenu extends Component {
 SideMenu.propTypes = {
     navigation: PropTypes.object
 };
+
+function mapStateToProps(state) {
+    return {
+        id: state.serverReducer.id
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        resetContacts: () => dispatch(resetContacts()),
+        retrieveContacts: () => dispatch(retrieveContacts())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);

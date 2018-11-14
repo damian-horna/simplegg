@@ -3,13 +3,18 @@ import {FlatList, Image, ImageBackground, ScrollView, Text, TextInput, Touchable
 import global from "../../../Global.style";
 import connect from "react-redux/es/connect/connect";
 import NavBack from "../../navbars/NavBack";
-import {selectUser} from "../../../redux-modules/server/actions";
+import {selectUser, sendMessage} from "../../../redux-modules/server/actions";
 import {Icon} from "react-native-elements";
 import styles from './Conversation.style';
 
 const ITEM_HEIGHT = 50;
 
 class ConversationScreen extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {message: ''}
+    }
 
     renderItem = ({item}) => {
         return <View
@@ -42,12 +47,11 @@ class ConversationScreen extends React.Component {
     );
 
     handleMessageChange(message) {
-
+        this.setState({
+            message: message
+        })
     }
 
-    handleButtonPress() {
-
-    }
 
     render() {
         const data = this.props.messages;
@@ -62,7 +66,7 @@ class ConversationScreen extends React.Component {
                         style={styles.listContainer}
                         contentContainerStyle={contentContainerStyle}
                         data={data}
-                        keyExtractor={item => item.time}
+                        keyExtractor={item => item.key.toString()}
                         renderItem={this.renderItem}
                         getItemLayout={this.itemLayout}
                         ListEmptyComponent={this.emptyList}
@@ -72,11 +76,11 @@ class ConversationScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             returnKeyType='send'
-                            onChangeText={this.handleMessageChange}
+                            onChangeText={(t) => this.setState({message: t})}
                             underlineColorAndroid={'transparent'}/>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={this.handleButtonPress}>
+                            onPress={() => this.props.sendMessage(this.state.message, this.props.id, this.props.selectedUserNumber)}>
                             <Icon name={'send'} color={'#5db3dd'}/>
                         </TouchableOpacity>
                     </View>
@@ -91,13 +95,18 @@ function mapStateToProps(state) {
         contacts: state.serverReducer.contacts,
         selectedUserIndex: state.serverReducer.selectedUserIndex,
         selectedUserName: state.serverReducer.contacts[state.serverReducer.selectedUserIndex].name,
-        messages: state.serverReducer.messages
+        selectedUserNumber: state.serverReducer.contacts[state.serverReducer.selectedUserIndex].number,
+        messages: state.serverReducer.messages,
+        serverAddress: state.serverReducer.serverAddress,
+        port: state.serverReducer.port,
+        id: state.serverReducer.id
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        selectUser: (index) => dispatch(selectUser(index))
+        selectUser: (index) => dispatch(selectUser(index)),
+        sendMessage: (msg, senderId, receiverId) => dispatch(sendMessage(msg, senderId, receiverId))
     }
 }
 

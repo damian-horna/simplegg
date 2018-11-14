@@ -5,8 +5,7 @@ import global from "../../../Global.style";
 import LabelInput from "../../inputs/labelInput/LabelInput";
 import {connect} from "react-redux";
 import {Icon} from "react-native-elements";
-import NavBack from "../../navbars/NavBack";
-import {register} from "../../../redux-modules/server/actions";
+import {register, retrieveContacts} from "../../../redux-modules/server/actions";
 import NavTitle from "../../navbars/NavTitle";
 
 class RegistrationScreen extends React.Component {
@@ -44,6 +43,7 @@ class RegistrationScreen extends React.Component {
                                 underlayColor='#387497'
                                 onPress={() => {
                                     this.props.register(this.state.name);
+                                    this.props.retrieveContacts();
                                     navigate('Messages')
                                 }}/>
                         </View>
@@ -58,7 +58,8 @@ class RegistrationScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        register: (name) => dispatch(register(name))
+        register: (name) => dispatch(register(name)),
+        retrieveContacts: () => dispatch(retrieveContacts())
     }
 }
 
