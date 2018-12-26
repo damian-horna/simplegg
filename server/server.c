@@ -11,6 +11,7 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
+#include <ctype.h>
 
 #define SERVER_PORT 1234
 #define QUEUE_SIZE 5
@@ -36,18 +37,6 @@ typedef struct client
 
 
 struct client clients[50] = {{0,0,""}};
-
-void initMutex()
-{
-
-    for(int k=0; k< 50; k++)
-    {
-        pthread_mutex_init(& clients[k].client_mutex,NULL);
-
-    }
-
-}
-
 
 int findIndex(int dest)
 {
@@ -128,13 +117,16 @@ void contact(int dest,char s[],int myIndex)
     pthread_mutex_unlock(& userId_mutex);
     char* msg = NULL;
     msg = concatenate(msgType, userIdStr);
-    char buf[50];
-    memset(buf,0,50);
-    strcpy(buf,msg);
     msgType=NULL;
+    int err;
     pthread_mutex_lock(& clients[myIndex].client_mutex);
-    printf("%s\n",buf);
-    write(dest,buf,50);
+    while(err=write(dest,msg,50)!=strlen(msg)){
+        sleep(0.01);
+        if(err<0){
+            printf("Error");
+            break;
+        }
+    }
     pthread_mutex_unlock(& clients[myIndex].client_mutex);
     msg=NULL;
     memset(userIdStr,0,5);
@@ -157,8 +149,14 @@ void showContacts(int des,int index)
             char* msg3=concatenate(msg2,clients[j].name);
             pthread_mutex_lock(& clients[index].client_mutex);
             printf("%s\n",msg3);
-
-            write(des,msg3,strlen(msg3));
+            int err;
+            while(err=write(des,msg3,strlen(msg3))!=strlen(msg3)){
+                sleep(0.01);
+                if(err<0){
+                    printf("Error");
+                    break;
+                }
+            }
             pthread_mutex_unlock(& clients[index].client_mutex);
             msgType3=NULL;
             msgType2=NULL;
@@ -200,7 +198,14 @@ void sendMsg(char s[])
         char* msg5= concatenate(msgType4,idStr);
         char* msg6=concatenate(msg5,& s[normal]);
         pthread_mutex_lock(& clients[desc].client_mutex);
-        write(findDesc(doo),msg6,2000);
+        int err;
+        while(err=write(findDesc(doo),msg6,2000) != strlen(msg6)){
+            sleep(0.01);
+            if(err<0){
+                printf("Error");
+                break;
+            }
+        }
         pthread_mutex_unlock(& clients[desc].client_mutex);
 
         msgType4=NULL;
@@ -219,21 +224,22 @@ void *ThreadBehavior(void *arg)
     pthread_detach(pthread_self());
     int newSocket = *((int *)arg);
     int myIndex = findIndex(newSocket);
+    pthread_mutex_init(& clients[myIndex].client_mutex,NULL);
     int t;
     int in=0;
     int z;
     while(1)
     {
 	z=0;
-        while((t=read(newSocket,(p++),1))>= 0)
+        while((t=read(newSocket,(p++),1))> 0)
         {
             if(*(p-1)==126)
             {
 		char * p2=buf;
-		while((t=read(newSocket,p2,1))>= 0){
+		while((t=read(newSocket,p2,1))> 0){
 			if(*(p2)==126){
-				*(p2)='\0';				
-				break;            		
+				*(p2)='\0';
+				break;
 			}
 			if(*(p2)=='\n')
 			{
@@ -265,7 +271,7 @@ void *ThreadBehavior(void *arg)
         memset(buf,'\0',2000);
         p=buf;
     }
-    printf("fwafaw\n");
+    pthread_mutex_destroy(&clients[myIndex].client_mutex);
     clients[myIndex].id=0;
     clients[myIndex].des=0;
     strcpy(clients[myIndex].name,"");
@@ -314,26 +320,30 @@ int main(int argc, char* argv[])
     }
     int i = 0;
     pthread_t thread1[50];
-    initMutex();
 
     int create_result;
     while(1)
     {
-        addr_size = sizeof serverStorage;
-	int *connection_socket_descriptor = malloc(4);
-        *connection_socket_descriptor = accept(server_socket_descriptor,  (struct sockaddr *) & serverStorage, & addr_size);
-        if (connection_socket_descriptor < 0)
-        {
-            fprintf(stderr, "%s: Błąd przy próbie utworzenia gniazda dla połączenia.\n", argv[0]);
-            exit(1);
+        if(clients[i].id==0){
+            addr_size = sizeof serverStorage;
+            int *connection_socket_descriptor = malloc(4);
+            *connection_socket_descriptor = accept(server_socket_descriptor,  (struct sockaddr *) & serverStorage, & addr_size);
+            if (connection_socket_descriptor < 0)
+            {
+                fprintf(stderr, "%s: Błąd przy próbie utworzenia gniazda dla połączenia.\n", argv[0]);
+                exit(1);
+            }
+            clients[i].des=*connection_socket_descriptor;
+
+            pthread_create(& thread1[i], NULL, ThreadBehavior, connection_socket_descriptor);
+
+            printf("Błąd przy próbie utworzenia wątku, kod błędu: %d\n", i);
+            free(connection_socket_descriptor);
         }
-        clients[i].des=*connection_socket_descriptor;
-
-        pthread_create(& thread1[i], NULL, ThreadBehavior, connection_socket_descriptor);
-
-        printf("Błąd przy próbie utworzenia wątku, kod błędu: %d\n", i);
         i++;
-
+        if(i==50){
+            i=0;
+        }
     }
 
     close(server_socket_descriptor);
