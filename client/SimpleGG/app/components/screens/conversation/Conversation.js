@@ -54,7 +54,20 @@ class ConversationScreen extends React.Component {
 
 
     render() {
-        const data = this.props.messages;
+        let filtered = [];
+        console.log("messages: ", this.props.messages);
+        console.log("sel user number: ", this.props.selectedUserNumber);
+        console.log("id: ", this.props.id);
+        for (let message of this.props.messages) {
+            console.log("in for: ", message)
+            if (message.from === this.props.selectedUserNumber && message.to === this.props.id ||
+                message.from === this.props.id && message.to === this.props.selectedUserNumber) {
+                console.log("inside if, pushing message")
+                filtered.push(message);
+            }
+        }
+        console.log("filtered: ", filtered);
+        const data = filtered;
         const contentContainerStyle = data.length ? null : styles.flatlistContainerStyle;
         return (
             <View style={global.container}>

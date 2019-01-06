@@ -1,6 +1,8 @@
 import {
-    ADD_CONTACT, ADD_MESSAGE,
-    REGISTER_USER, RESET_CONTACTS,
+    ADD_CONTACT,
+    ADD_MESSAGE,
+    REGISTER_USER,
+    RESET_CONTACTS,
     SET_CONTACTS,
     SET_RESPONSE,
     SET_SERVER_ADDRESS_AND_PORT,
@@ -47,7 +49,13 @@ const serverReducer = (state = initial, action) => {
         }
         case ADD_MESSAGE: {
             let messagesCopy = state.messages.slice();
-            messagesCopy.unshift({...action.msg, key: state.messages.length});
+            let newMsg = action.msg;
+            if (action.msg.to === 'me') {
+                console.log("if ok");
+                newMsg.to = state.id;
+                console.log("new msg is: " ,newMsg);
+            }
+            messagesCopy.unshift({...newMsg, key: state.messages.length});
             return {...state, messages: messagesCopy};
         }
         case RESET_CONTACTS: {
