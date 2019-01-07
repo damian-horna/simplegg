@@ -13,7 +13,8 @@
 #include <pthread.h>
 #include <ctype.h>
 
-#define SERVER_PORT 1235
+
+#define SERVER_PORT 1236
 #define QUEUE_SIZE 5
 
 
@@ -135,40 +136,34 @@ void contact(int dest,char s[],int myIndex)
 
 void showContacts(int des,int index)
 {
+    char* separator = ",";
+    char* message="c";
     for(int j=0; j< 50; j++)
     {
         if(clients[j].id!=0)
         {
-            char* msgType3 = "c,";
-            char* msgType2 = ",";
-            char userIdStr[5];
-            memset(userIdStr,0,5);
+            char userIdStr[3];
+            memset(userIdStr,0,3);
             sprintf( userIdStr,"%d",clients[j].id);
-            char* msg4= concatenate(msgType3,userIdStr);
-            char* msg2 = concatenate(msg4,msgType2);
-            char* msg3=concatenate(msg2,clients[j].name);
-            pthread_mutex_lock(& clients[index].client_mutex);
-            printf("%s\n",msg3);
-            int err;
-            while( (err=write(des,msg3,strlen(msg3))!=strlen(msg3)) ){
-                sleep(0.01);
-                if(err<0){
-                    printf("Error");
-                    break;
-                }
-            }
-            pthread_mutex_unlock(& clients[index].client_mutex);
-            msgType3=NULL;
-            msgType2=NULL;
-            msg4=NULL;
-            msg2=NULL;
-            msg3=NULL;
-            memset(userIdStr,0,5);
-            free(msg4);
-            free(msg2);
-            free(msg3);
+            char* sid= concatenate(separator,userIdStr);
+            char* msg2 = concatenate(sid,separator);
+            char* msg3 =concatenate(msg2,clients[j].name);
+            
+	    message = concatenate(message,msg3);
+            
         }
     }
+    pthread_mutex_lock(& clients[index].client_mutex);
+    int err;
+    while( (err=write(des,message,strlen(message))!=strlen(message)) ){
+        sleep(0.01);
+        if(err<0){
+            printf("Error");
+            break;
+        }
+    }
+    free(message);
+    pthread_mutex_unlock(& clients[index].client_mutex);
 }
 void saveMsg(char s[],int a,int b,int index)
 {
