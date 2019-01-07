@@ -87,13 +87,20 @@ class ConversationScreen extends React.Component {
                     />
                     <View style={styles.msgContainer}>
                         <TextInput
+                            value={this.state.message}
+                            onChange={(msg) => this.setState({message: msg})}
                             style={styles.textInput}
                             returnKeyType='send'
                             onChangeText={(t) => this.setState({message: t})}
                             underlineColorAndroid={'transparent'}/>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => this.props.sendMessage(this.state.message, this.props.id, this.props.selectedUserNumber)}>
+                            onPress={() => {
+                                this.props.sendMessage(this.state.message, this.props.id, this.props.selectedUserNumber);
+                                this.setState({
+                                    message: ''
+                                });
+                            }}>
                             <Icon name={'send'} color={'#5db3dd'}/>
                         </TouchableOpacity>
                     </View>
