@@ -42,9 +42,10 @@ export function connectToServer(serverAddress, port) {
 
             if (data.toString().charAt(0) === 'c') {
                 let message = data.toString().trim();
-                let splitted = message.split(",");
-                console.log(splitted);
-                dispatch(addToContacts({name: splitted[2], number: splitted[1]}));
+                let splitted = message.substring(2).split(",");
+                for (let i = 0; i < splitted.length; i += 2) {
+                    dispatch(addToContacts({name: splitted[i + 1], number: splitted[i]}));
+                }
             }
 
             if (data.toString().charAt(0) === 'd') {
